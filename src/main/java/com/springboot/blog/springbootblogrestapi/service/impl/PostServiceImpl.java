@@ -2,7 +2,7 @@ package com.springboot.blog.springbootblogrestapi.service.impl;
 
 import com.springboot.blog.springbootblogrestapi.dto.PostDto;
 import com.springboot.blog.springbootblogrestapi.dto.PostResponse;
-import com.springboot.blog.springbootblogrestapi.entity.Posts;
+import com.springboot.blog.springbootblogrestapi.entity.Post;
 import com.springboot.blog.springbootblogrestapi.exception.ResourceNotFoundException;
 import com.springboot.blog.springbootblogrestapi.repository.PostRepository;
 import com.springboot.blog.springbootblogrestapi.service.PostService;
@@ -23,8 +23,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     @Override
     public PostDto createPost(PostDto postDto) {
-        Posts post = mapToEntity(postDto);
-        Posts newPost = postRepository.save(post);
+        Post post = mapToEntity(postDto);
+        Post newPost = postRepository.save(post);
 
         return  mapToDto(newPost);
     }
@@ -34,9 +34,9 @@ public class PostServiceImpl implements PostService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Posts> posts = postRepository.findAll(pageable);
+        Page<Post> posts = postRepository.findAll(pageable);
 
-        List<Posts> postList = posts.getContent();
+        List<Post> postList = posts.getContent();
         List<PostDto> content = postList.stream().map(this::mapToDto).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
@@ -52,35 +52,35 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto getPost(Long postId) {
-        Posts post = postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new ResourceNotFoundException("Post", "postId", postId ));
         return mapToDto(post);
     }
 
     @Override
     public PostDto updatePost(PostDto postDto, Long postId) {
-        Posts post = postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new ResourceNotFoundException("Post", "postId", postId));
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
-        Posts updatedPost = postRepository.save(post);
+        Post updatedPost = postRepository.save(post);
         return mapToDto(updatedPost);
     }
 
     @Override
     public void deletePost(Long postId) {
-        Posts post = postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new ResourceNotFoundException("Post", "postId", postId));
         postRepository.delete(post);
     }
 
-    private Posts mapToEntity(PostDto postDto){
-        Posts post = new Posts();
+    private Post mapToEntity(PostDto postDto){
+        Post post = new Post();
         BeanUtils.copyProperties(postDto, post);
         return post;
     }
-    private PostDto mapToDto(Posts post){
+    private PostDto mapToDto(Post post){
         PostDto postResponse = new PostDto();
         BeanUtils.copyProperties(post, postResponse);
         return postResponse;

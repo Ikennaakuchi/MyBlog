@@ -1,8 +1,8 @@
 package com.springboot.blog.springbootblogrestapi.repository;
 
-import com.springboot.blog.springbootblogrestapi.entity.Posts;
+import com.springboot.blog.springbootblogrestapi.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostRepository extends JpaRepository<Posts, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
 }
