@@ -7,6 +7,7 @@ import com.springboot.blog.springbootblogrestapi.exception.ResourceNotFoundExcep
 import com.springboot.blog.springbootblogrestapi.repository.PostRepository;
 import com.springboot.blog.springbootblogrestapi.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final ModelMapper mapper;
     @Override
     public PostDto createPost(PostDto postDto) {
         Post post = mapToEntity(postDto);
@@ -76,13 +78,12 @@ public class PostServiceImpl implements PostService {
     }
 
     private Post mapToEntity(PostDto postDto){
-        Post post = new Post();
-        BeanUtils.copyProperties(postDto, post);
+        Post post = mapper.map(postDto, Post.class);
         return post;
     }
+    
     private PostDto mapToDto(Post post){
-        PostDto postResponse = new PostDto();
-        BeanUtils.copyProperties(post, postResponse);
-        return postResponse;
+        PostDto postResponse = mapper.map(post, PostDto.class);
+        return post;
     }
 }

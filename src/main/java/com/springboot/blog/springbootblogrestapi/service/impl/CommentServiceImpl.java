@@ -9,10 +9,10 @@ import com.springboot.blog.springbootblogrestapi.repository.CommentRepository;
 import com.springboot.blog.springbootblogrestapi.repository.PostRepository;
 import com.springboot.blog.springbootblogrestapi.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +23,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final ModelMapper mapper;
 
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
@@ -84,14 +85,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDto mapToDto(Comment comment){
-        CommentDto commentDto = new CommentDto();
-        BeanUtils.copyProperties(comment, commentDto);
+        CommentDto commentDto = mapper.map(comment, CommentDto.class);
         return commentDto;
     }
 
     private Comment mapToEntity(CommentDto commentDto){
+        Comment comment = mapper.map(commentDto,Comment.class);
         Comment comment = new Comment();
-        BeanUtils.copyProperties(commentDto, comment);
         return comment;
     }
 }
