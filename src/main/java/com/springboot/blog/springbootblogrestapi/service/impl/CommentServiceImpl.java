@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final ModelMapper mapper;
+
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
         Post post = postRepository.findById(postId)
@@ -91,6 +91,7 @@ public class CommentServiceImpl implements CommentService {
 
     private Comment mapToEntity(CommentDto commentDto){
         Comment comment = mapper.map(commentDto,Comment.class);
+        Comment comment = new Comment();
         return comment;
     }
 }
