@@ -91,7 +91,6 @@ public class CommentServiceImpl implements CommentService {
 
     private Comment mapToEntity(CommentDto commentDto){
         Comment comment = mapper.map(commentDto,Comment.class);
-        Comment comment = new Comment();
         return comment;
     }
 }

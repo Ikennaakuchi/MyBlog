@@ -84,6 +84,6 @@ public class PostServiceImpl implements PostService {
     
     private PostDto mapToDto(Post post){
         PostDto postResponse = mapper.map(post, PostDto.class);
-        return post;
+        return postResponse;
     }
 }
